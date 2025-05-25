@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { formatDistanceToNow } from 'date-fns';
-import Navbar from '../components/Navbar';
-import JobCard from '../components/JobCard';
-import jobService from '../services/jobService';
+import jobService from '../services/jobService'; // Assumes jobService.getJobs(filters) is defined
+import JobListingGrid from '../components/JobListingGrid'; // Assumes it accepts a jobs prop
 
 const JobListingPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -38,132 +36,97 @@ const JobListingPage = () => {
   return (
     <div>
       {/* Navbar */}
-      <div className="navbar">
-        <div className="navbar-brand">
-          <div className="navbar-logo"></div>
-          <a href="/" className="navbar-title">Job Portal</a>
+      <div className="navbar" style={{ padding: '20px', background: '#f8fafc', display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <a href="/" style={{ fontSize: '24px', fontWeight: 'bold' }}>Job Portal</a> {/* cyberWork-mind-LOGO */}
         </div>
-        <nav className="navbar-nav">
-          <a href="/" className="navbar-link">Home</a>
-          <a href="/find-jobs" className="navbar-link">Find Jobs</a>
-          <a href="/find-talents" className="navbar-link">Find Talents</a>
-          <a href="/about-us" className="navbar-link">About us</a>
-          <a href="/testimonials" className="navbar-link">Testimonials</a>
-          <button className="create-job-btn" onClick={() => navigate('/create-job')}>
-            Create Jobs
-          </button>
-        </nav>
+        <div style={{ display: 'flex', gap: '20px' }}>
+          <a href="/">Home</a>
+          <a href="/find-jobs">Find Jobs</a>
+          <a href="/find-talents">Find Talents</a>
+          <a href="/about-us">About Us</a>
+          <a href="/testimonials">Testimonials</a>
+          <button onClick={() => navigate('/create-job')} style={{ padding: '8px 16px', background: '#3b82f6', color: 'white', borderRadius: '6px' }}>Create Jobs</button>
+        </div>
       </div>
 
-      <div className="container">
-        {/* Page Header */}
-        <div className="page-header">
-          <h1 className="page-title">Find Your Dream Job</h1>
-          <button
-            onClick={() => navigate('/create-job')}
-            className="create-job-btn"
+      {/* Filters */}
+      <div style={{
+        background: 'white',
+        padding: '24px 32px',
+        borderRadius: '16px',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+        margin: '40px auto',
+        maxWidth: '1400px',
+        border: '1px solid #f1f5f9'
+      }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 2fr 1fr 1fr 1fr',
+          gap: '16px',
+        }}>
+          <input
+            type="text"
+            name="title"
+            placeholder="Search Job Title"
+            value={filters.title}
+            onChange={handleInputChange}
+            style={inputStyle}
+          />
+          <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={filters.location}
+            onChange={handleInputChange}
+            style={inputStyle}
+          />
+          <select
+            name="type"
+            value={filters.type}
+            onChange={handleInputChange}
+            style={inputStyle}
           >
-            + Create Job
-          </button>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+            <option value="Internship">Internship</option>
+          </select>
+          <input
+            type="number"
+            name="salaryMin"
+            placeholder="Min Salary"
+            value={filters.salaryMin}
+            onChange={handleInputChange}
+            style={inputStyle}
+          />
+          <input
+            type="number"
+            name="salaryMax"
+            placeholder="Max Salary"
+            value={filters.salaryMax}
+            onChange={handleInputChange}
+            style={inputStyle}
+          />
         </div>
+      </div>
 
-        {/* Search and Filters Section */}
-        <div className="search-section">
-          <div className="search-grid">
-            <div className="search-input">
-              <span className="search-icon">🔍</span>
-              <input
-                type="text"
-                placeholder="Search By Job Title, Role"
-                name="title"
-                value={filters.title}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="filter-dropdown">
-              <select
-                name="location"
-                value={filters.location}
-                onChange={handleInputChange}
-              >
-                <option value="">Preferred Location</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Bangalore">Bangalore</option>
-                <option value="Hyderabad">Hyderabad</option>
-                <option value="Chennai">Chennai</option>
-                <option value="Pune">Pune</option>
-                <option value="Kolkata">Kolkata</option>
-              </select>
-            </div>
-
-            <div className="filter-dropdown">
-              <select
-                name="type"
-                value={filters.type}
-                onChange={handleInputChange}
-              >
-                <option value="">Job type</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
-                <option value="Temporary">Temporary</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Salary Range */}
-          <div className="salary-range mt-4">
-            <span>Salary Per Month</span>
-            <div className="salary-slider">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                className="slider"
-              />
-            </div>
-            <span>₹50k - ₹80k</span>
-          </div>
-
-          {/* Additional Filters */}
-          <div className="search-grid mt-4">
-            <input
-              type="number"
-              placeholder="Min Salary"
-              name="salaryMin"
-              value={filters.salaryMin}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-            <input
-              type="number" 
-              placeholder="Max Salary"
-              name="salaryMax"
-              value={filters.salaryMax}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-        </div>
-
-        {/* Job Cards Grid */}
-        <div className="jobs-grid">
-          {jobs.length === 0 ? (
-            <div className="text-center">
-              <p>No jobs found.</p>
-            </div>
-          ) : (
-            jobs.map((job) => (
-              <JobCard key={job._id} job={job} />
-            ))
-          )}
-        </div>
+      {/* Job Listing Grid */}
+      <div style={{ padding: '0 40px 60px' }}>
+        <JobListingGrid jobs={jobs} />
       </div>
     </div>
   );
+};
+
+// 🔧 Common input styling
+const inputStyle = {
+  padding: '12px 16px',
+  fontSize: '16px',
+  borderRadius: '8px',
+  border: '1px solid #e5e7eb',
+  outline: 'none',
+  width: '100%',
 };
 
 export default JobListingPage;
