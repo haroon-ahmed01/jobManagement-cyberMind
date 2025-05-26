@@ -7,7 +7,10 @@ const cors = require('cors');
 const app = express();
 
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "https://your-frontend-url.netlify.app"],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/api', jobRoutes);
@@ -21,7 +24,7 @@ const dbConnect = async () => {
 dbConnect()
 
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`The Server is running on PORT: ${PORT}`)
 })
