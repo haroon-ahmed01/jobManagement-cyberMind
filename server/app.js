@@ -8,7 +8,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: ["http://localhost:3000", "https://jobmanagement-cm.onrender.com"],
+  origin: ["https://jobmanagement-cm.onrender.com"],
   credentials: true
 }));
 app.use(express.json());
