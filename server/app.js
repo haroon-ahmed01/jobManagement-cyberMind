@@ -3,8 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const jobRoutes = require('./routes/jobRoutes');
 const cors = require('cors');
-const PORT = 3000
-
 
 const app = express();
 
@@ -23,7 +21,7 @@ const dbConnect = async () => {
 dbConnect()
 
 
-
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`The Server is running on PORT: ${PORT}`)
 })
