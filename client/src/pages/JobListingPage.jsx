@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import jobService from '../services/jobService'; // Assumes jobService.getJobs(filters) is defined
-import JobListingGrid from '../components/JobListingGrid'; // Assumes it accepts a jobs prop
+import jobService from '../services/jobService';
+import JobListingGrid from '../components/JobListingGrid';
+import Navbar from '../components/Navbar'; 
+import './JobListingPage.css';
+
 
 const JobListingPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -9,8 +12,8 @@ const JobListingPage = () => {
     title: '',
     location: '',
     type: '',
-    salaryMin: '',
-    salaryMax: '',
+    salaryMin: "10000",
+    salaryMax: "120000",
   });
 
   const navigate = useNavigate();
@@ -33,100 +36,140 @@ const JobListingPage = () => {
     setFilters({ ...filters, [name]: value });
   };
 
-  return (
-    <div>
-      {/* Navbar */}
-      <div className="navbar" style={{ padding: '20px', background: '#f8fafc', display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          <a href="/" style={{ fontSize: '24px', fontWeight: 'bold' }}>Job Portal</a> {/* cyberWork-mind-LOGO */}
-        </div>
-        <div style={{ display: 'flex', gap: '20px' }}>
-          <a href="/">Home</a>
-          <a href="/find-jobs">Find Jobs</a>
-          <a href="/find-talents">Find Talents</a>
-          <a href="/about-us">About Us</a>
-          <a href="/testimonials">Testimonials</a>
-          <button onClick={() => navigate('/create-job')} style={{ padding: '8px 16px', background: '#3b82f6', color: 'white', borderRadius: '6px' }}>Create Jobs</button>
-        </div>
-      </div>
+  const handleSalaryChange = (type, value) => {
+    const numValue = parseInt(value);
+    setFilters({ ...filters, [type]: numValue });
+  };
 
-      {/* Filters */}
-      <div style={{
-        background: 'white',
-        padding: '24px 32px',
-        borderRadius: '16px',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
-        margin: '40px auto',
-        maxWidth: '1400px',
-        border: '1px solid #f1f5f9'
-      }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 2fr 1fr 1fr 1fr',
-          gap: '16px',
-        }}>
+  const formatSalary = (amount) => {
+    if (amount === 0) return '₹0k';
+    return `₹${(amount / 1000)}k`;
+  };
+
+  return (
+    <div className="job-listing-page">
+      <Navbar />
+
+      <div className="filter-container">
+        <div className="filter-section">
+          <div className="filter-icon-wrapper">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M8.11111 15.2222C12.0385 15.2222 15.2222 12.0385 15.2222 8.11111C15.2222 4.18375 12.0385 1 8.11111 1C4.18375 1 1 4.18375 1 8.11111C1 12.0385 4.18375 15.2222 8.11111 15.2222Z" stroke="#686868" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M17 17L13.1333 13.1333" stroke="#686868" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
           <input
             type="text"
             name="title"
-            placeholder="Search Job Title"
+            placeholder="Search By Job Title, Role"
             value={filters.title}
             onChange={handleInputChange}
-            style={inputStyle}
+            className="filter-input"
           />
+        </div>
+
+        <div className="filter-divider"></div>
+
+        <div className="filter-section">
+          <div className="filter-icon-wrapper">
+            <svg width="16" height="21" viewBox="0 0 16 21" fill="none">
+              <path d="M8 11C9.65685 11 11 9.65685 11 8C11 6.34315 9.65685 5 8 5C6.34315 5 5 6.34315 5 8C5 9.65685 6.34315 11 8 11Z" stroke="#686868" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 1C12.4183 1 16 4.58172 16 9C16 14 8 20 8 20C8 20 0 14 0 9C0 4.58172 3.58172 1 8 1Z" stroke="#686868" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
           <input
             type="text"
             name="location"
-            placeholder="Location"
+            placeholder="Preferred Location"
             value={filters.location}
             onChange={handleInputChange}
-            style={inputStyle}
+            className="filter-input"
           />
+          <div className="filter-down-arrow">
+            <svg width="10" height="4" viewBox="0 0 10 4" fill="none">
+              <path d="M1 1L5 3L9 1" stroke="#686868" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div className="filter-divider"></div>
+
+        <div className="filter-section">
+          <div className="filter-icon-wrapper">
+            <svg width="18" height="16" viewBox="0 0 18 16" fill="none">
+              <path d="M16 4H12L10 2H6L4 4H0V14C0 14.5304 0.210714 15.0391 0.585786 15.4142C0.960859 15.7893 1.46957 16 2 16H16C16.5304 16 17.0391 15.7893 17.4142 15.4142C17.7893 15.0391 18 14.5304 18 14V6C18 5.46957 17.7893 4.96086 17.4142 4.58579C17.0391 4.21071 16.5304 4 16 4Z" stroke="#686868" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
           <select
             name="type"
             value={filters.type}
             onChange={handleInputChange}
-            style={inputStyle}
+            className="filter-select"
           >
+            <option value="">Job type</option>
             <option value="Full-time">Full-time</option>
             <option value="Part-time">Part-time</option>
             <option value="Contract">Contract</option>
             <option value="Internship">Internship</option>
           </select>
-          <input
-            type="number"
-            name="salaryMin"
-            placeholder="Min Salary"
-            value={filters.salaryMin}
-            onChange={handleInputChange}
-            style={inputStyle}
-          />
-          <input
-            type="number"
-            name="salaryMax"
-            placeholder="Max Salary"
-            value={filters.salaryMax}
-            onChange={handleInputChange}
-            style={inputStyle}
-          />
+          <div className="filter-down-arrow">
+            <svg width="10" height="4" viewBox="0 0 10 4" fill="none">
+              <path d="M1 1L5 3L9 1" stroke="#686868" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div className="filter-divider"></div>
+
+        <div className="salary-container">
+          <div className="salary-header">
+            <span className="salary-label">Salary Per Month</span>
+            <span className="salary-value">
+              {`${formatSalary(filters.salaryMin)} - ${formatSalary(filters.salaryMax)}`}
+            </span>
+          </div>
+          <div className="slider-container">
+            <div className="slider-track">
+              <div 
+                className="slider-active-track"
+                style={{
+                  left: `${Math.min(((filters.salaryMin - 10000) / (200000 - 10000)) * 100, ((filters.salaryMax - 10000) / (200000 - 10000)) * 100)}%`,
+                  width: `${Math.abs(((filters.salaryMax - filters.salaryMin) / (200000 - 10000)) * 100)}%`
+                }}
+              ></div>
+            </div>
+            
+            {/* Min Range Input */}
+            <input
+              type="range"
+              min="10000"
+              max="200000"
+              step="1000"
+              value={filters.salaryMin}
+              onChange={(e) => handleSalaryChange('salaryMin', e.target.value)}
+              className="slider-input"
+            />
+            
+            {/* Max Range Input */}
+            <input
+              type="range"
+              min="10000"
+              max="200000"
+              step="1000"
+              value={filters.salaryMax}
+              onChange={(e) => handleSalaryChange('salaryMax', e.target.value)}
+              className="slider-input"
+            />
+          </div>
         </div>
       </div>
 
       {/* Job Listing Grid */}
-      <div style={{ padding: '0 40px 60px' }}>
+      <div className="job-listing-page-content">
         <JobListingGrid jobs={jobs} />
       </div>
     </div>
   );
-};
-
-// 🔧 Common input styling
-const inputStyle = {
-  padding: '12px 16px',
-  fontSize: '16px',
-  borderRadius: '8px',
-  border: '1px solid #e5e7eb',
-  outline: 'none',
-  width: '100%',
 };
 
 export default JobListingPage;

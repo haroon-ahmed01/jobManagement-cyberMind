@@ -20,8 +20,8 @@ const jobSchema = new mongoose.Schema({
     max: { type: Number, required: true }
   },
   description: { type: String, required: true },
-  requirements: { type: [String], required: true },
-  responsibilities: { type: [String], required: true },
+  requirements: { type: [String], default: [] },
+  responsibilities: { type: [String], default: [] },
   deadline: { type: Date, required: true },
   logoUrl: { type: String, default: "" },
 }, 

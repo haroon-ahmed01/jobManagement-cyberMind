@@ -1,0 +1,217 @@
+.job-creation-background {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+  padding: 24px 32px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #222222;
+  margin: 0;
+  align-items: center;
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  line-height: 1;
+}
+
+.modal-body {
+  padding: 32px;
+  max-height: calc(90vh - 120px);
+  overflow-y: auto;
+  background: white;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-label {
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #374151;
+}
+
+.form-input {
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #e1e5e9;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: white;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  border-color: #00AAFF;
+  box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1);
+}
+
+.form-select {
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #e1e5e9;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  border-color: #00AAFF;
+  box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1);
+}
+
+.form-textarea {
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #e1e5e9;
+  outline: none;
+  min-height: 120px;
+  resize: vertical;
+  font-family: inherit;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.form-textarea:focus {
+  border-color: #00AAFF;
+  box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1);
+}
+
+.salary-group {
+  display: flex;
+  gap: 12px;
+}
+
+.error-message {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.btn-secondary {
+  width: 160px;
+  height: 50px;
+  margin-right: 400px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  background: white;
+  border: 2px solid #374151;
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+  transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  width: 160px;
+  height: 50px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  background: #00AAFF;
+  border: none;
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary:hover {
+  background: #0099e6;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

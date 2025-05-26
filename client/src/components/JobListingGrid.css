@@ -1,0 +1,190 @@
+.job-card {
+  width: 316px;
+  height: 360px;
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0px 0px 14px 0px rgba(211, 211, 211, 0.15);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0;
+}
+
+.job-card-time-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 55px;
+  height: 30px;
+  background-color: #B0D9FF;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #000000;
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.job-card-company-logo {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 83.46px;
+  height: 82px;
+  border-radius: 13.18px;
+  background: linear-gradient(180deg, #FEFEFD 0%, #F1F1F1 100%);
+  border: 1px solid #FFFFFF;
+  box-shadow: 0px 0px 10.25px 0px rgba(148, 148, 148, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-card-company-logo-inner {
+  width: 65.89px;
+  height: 65.89px;
+  border-radius: 50%;
+  background-color: #1f2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.job-card-title {
+  position: absolute;
+  top: 117px;
+  left: 16px;
+  width: 190px;
+  height: 27px;
+}
+
+.job-card-title h3 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+  margin: 0;
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.job-card-details {
+  position: absolute;
+  top: 160px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5A5A5A;
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.job-card-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.job-card-detail-experience {
+  width: 72px;
+  height: 22px;
+}
+
+.job-card-detail-worktype {
+  width: 47px;
+  height: 22px;
+}
+
+.job-card-detail-salary {
+  width: 66.18px;
+  height: 22px;
+}
+
+.job-card-description {
+  position: absolute;
+  top: 210px;
+  left: 16px;
+  right: 16px;
+  height: 60px;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.4;
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.job-card-description-item {
+  margin-bottom: 4px;
+}
+
+.job-card-apply-button-container {
+  position: absolute;
+  top: 298px;
+  left: 16px;
+  width: 284px;
+  height: 46px;
+}
+
+.job-card-apply-button {
+  width: 100%;
+  height: 100%;
+  background-color: #00AAFF;
+  color: #FFFFFF;
+  border: 1px solid #00AAFF;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0px 0px 14px 0px #5D5D5D26;
+  padding: 12px 10px;
+  transition: all 0.2s ease;
+}
+
+.job-listing-grid-container {
+  padding: 20px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.job-listing-grid-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.job-listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 316px);
+  gap: 16px;
+  justify-content: center;
+  width: 1312px;
+  margin: 0 auto;
+}
+
+.job-listing-no-jobs {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.job-listing-no-jobs p {
+  font-size: 18px;
+  color: #6b7280;
+  margin: 0;
+}
