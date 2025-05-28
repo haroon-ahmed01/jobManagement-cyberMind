@@ -31,6 +31,58 @@ const JobCard = ({ job }) => {
     return logos[company] || '🏢';
   };
 
+  const formatSalary = (salary) => {
+    if (!salary) return '12LPA';
+  
+    const toLPA = (value) => {
+      const annualSalary = value * 12;
+      const lpa = annualSalary / 100000;
+      return lpa % 1 === 0 ? `${lpa}LPA` : `${lpa.toFixed(1)}LPA`;
+    };
+  
+    if (typeof salary === 'string' && salary.includes('-')) {
+      const [minStr, maxStr] = salary.split('-').map(s => parseFloat(s.trim()));
+      if (!isNaN(minStr) && !isNaN(maxStr)) {
+        const higherValue = Math.max(minStr, maxStr);
+        return toLPA(higherValue);
+      }
+    }
+  
+    if (typeof salary === 'number') {
+      return toLPA(salary);
+    }
+  
+    if (typeof salary === 'object' && (salary.min || salary.max)) {
+      const higherValue = Math.max(salary.min || 0, salary.max || 0);
+      return toLPA(higherValue);
+    }
+  
+    if (typeof salary === 'string' && salary.includes('LPA')) {
+      return salary;
+    }
+  
+    return '12LPA';
+  };
+
+  const getDescriptionPoints = (description) => {
+    const defaultPoints = [
+      "A user-friendly interface lets you browse stunning photos and videos",
+      "Filter destinations based on interests and travel style, and create personalized"
+    ];
+    
+    if (!description) return defaultPoints;
+    
+    // Extract first two sentences
+    const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const points = sentences.slice(0, 2).map(s => s.trim());
+    
+    // Fill with defaults if needed
+    return [
+      points[0] || defaultPoints[0],
+      points[1] || defaultPoints[1]
+    ];
+  };
+
   return (
     <div className="job-card">
       <div className="job-card-time-badge">
@@ -44,9 +96,7 @@ const JobCard = ({ job }) => {
       </div>
 
       <div className="job-card-title">
-        <h3>
-          {job.title}
-        </h3>
+        <h3>{job.title}</h3>
       </div>
 
       <div className="job-card-details">
@@ -59,7 +109,6 @@ const JobCard = ({ job }) => {
           </span>
         </div>
 
-        {/* Work Type */}
         <div className="job-card-detail-item">
           <svg width="19" height="16.41" viewBox="0 0 20 17" fill="none">
             <path d="M2 15V3C2 2.45 2.19583 1.97917 2.5875 1.5875C2.97917 1.19583 3.45 1 4 1H16C16.55 1 17.0208 1.19583 17.4125 1.5875C17.8042 1.97917 18 2.45 18 3V15L14 13L10 15L6 13L2 15Z" stroke="#5A5A5A" strokeWidth="1.6" fill="none"/>
@@ -69,41 +118,32 @@ const JobCard = ({ job }) => {
           </span>
         </div>
 
-        {/* Salary */}
         <div className="job-card-detail-item">
-          <svg width="18.18" height="20" viewBox="0 0 19 21" fill="none">
-            <path d="M9 1V20M12 4H7.5C6.83696 4 6.20107 4.26339 5.73223 4.73223C5.26339 5.20107 5 5.83696 5 6.5C5 7.16304 5.26339 7.79893 5.73223 8.26777C6.20107 8.73661 6.83696 9 7.5 9H10.5C11.163 9 11.7989 9.26339 12.2678 9.73223C12.7366 10.2011 13 10.837 13 11.5C13 12.163 12.7366 12.7989 12.2678 13.2678C11.7989 13.7366 11.163 14 10.5 14H5" stroke="#5A5A5A" strokeWidth="1.6" fill="none"/>
-          </svg>
-          <span className="job-card-detail-salary">{job.salary?.min || 12}LPA</span>
+        <svg width="18.18" height="20" viewBox="0 0 19 21" fill="none">
+  <rect x="4" y="11" width="11" height="5" rx="0.5" stroke="#5A5A5A" strokeWidth="1.6" fill="none"/>
+  <rect x="4" y="8" width="11" height="5" rx="0.5" stroke="#5A5A5A" strokeWidth="1.6" fill="none"/>
+  <rect x="4" y="5" width="11" height="5" rx="0.5" stroke="#5A5A5A" strokeWidth="1.6" fill="none"/>
+  <rect x="4" y="2" width="11" height="5" rx="0.5" stroke="#5A5A5A" strokeWidth="1.6" fill="none"/>
+</svg>
+          <span className="job-card-detail-salary">{formatSalary(job.salary)}</span>
         </div>
       </div>
 
       <div className="job-card-description">
-        {job.description ? (
-          <div>
-            {job.description.split('\n').slice(0, 2).map((line, index) => (
-              <div key={index} className="job-card-description-item">
-                {line.startsWith('•') ? line : `• ${line}`}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div>
-            <div className="job-card-description-item">
-              • A user-friendly interface lets you browse stunning photos and videos
-            </div>
-            <div className="job-card-description-item">
-              • Filter destinations based on interests and travel style, and create personalized
-            </div>
-          </div>
-        )}
+      <ul className="job-card-description-list">
+          {getDescriptionPoints(job.description).map((point, index) => (
+            <li key={index} className="job-card-description-item">
+              {point}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="job-card-apply-button-container">
-        <button className="job-card-apply-button"
-        onClick={() => {
-          console.log('Apply clicked for:', job.title);
-        }}>
+        <button 
+          className="job-card-apply-button"
+          onClick={() => console.log('Apply clicked for:', job.title)}
+        >
           Apply Now
         </button>
       </div>
@@ -112,88 +152,8 @@ const JobCard = ({ job }) => {
 };
 
 const JobListingGrid = ({ jobs = [] }) => {
-  // Sample data if no jobs provided
   const sampleJobs = [
-    // {
-    //   id: 1,
-    //   title: 'Full Stack Developer',
-    //   company: 'Amazon',
-    //   createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    //   experience: { min: 1, max: 3 },
-    //   salary: { min: 12, max: 18 },
-    //   workType: 'Onsite',
-    //   description: 'Build scalable web applications using modern technologies\nWork with cross-functional teams to deliver high-quality products\nParticipate in code reviews and maintain coding standards'
-    // },
-    // {
-    //   id: 2,
-    //   title: 'Node Js Developer',
-    //   company: 'Tesla',
-    //   createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    //   experience: { min: 1, max: 3 },
-    //   salary: { min: 12, max: 15 },
-    //   workType: 'Onsite',
-    //   description: 'Develop robust backend services using Node.js\nDesign and implement RESTful APIs\nOptimize database queries and improve application performance'
-    // },
-    // {
-    //   id: 3,
-    //   title: 'UX/UI Designer',
-    //   company: 'Swiggy',
-    //   createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    //   experience: { min: 1, max: 3 },
-    //   salary: { min: 12, max: 16 },
-    //   workType: 'Onsite',
-    //   description: 'Create intuitive and visually appealing user interfaces\nConduct user research and usability testing\nCollaborate with development teams to implement designs'
-    // },
-    // {
-    //   id: 4,
-    //   title: 'Full Stack Developer',
-    //   company: 'Microsoft',
-    //   createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    //   experience: { min: 1, max: 3 },
-    //   salary: { min: 12, max: 20 },
-    //   workType: 'Onsite',
-    //   description: 'End-to-end development of web applications\nIntegrate third-party services and APIs\nEnsure responsive design across multiple devices'
-    // },
-    // {
-    //   id: 5,
-    //   title: 'Node Js Developer',
-    //   company: 'Google',
-    //   createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    //   experience: { min: 1, max: 3 },
-    //   salary: { min: 15, max: 22 },
-    //   workType: 'Remote',
-    //   description: 'Build microservices and distributed systems\nImplement automated testing and CI/CD pipelines\nMonitor and maintain production applications'
-    // },
-    // {
-    //   id: 6,
-    //   title: 'UX/UI Designer',
-    //   company: 'Apple',
-    //   createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    //   experience: { min: 2, max: 4 },
-    //   salary: { min: 18, max: 25 },
-    //   workType: 'Hybrid',
-    //   description: 'Design user-centered digital experiences\nCreate wireframes, prototypes, and high-fidelity mockups\nMaintain design systems and style guides'
-    // },
-    // {
-    //   id: 7,
-    //   title: 'Full Stack Developer',
-    //   company: 'Meta',
-    //   createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
-    //   experience: { min: 2, max: 5 },
-    //   salary: { min: 20, max: 30 },
-    //   workType: 'Remote',
-    //   description: 'Develop social media platform features\nOptimize for performance and scalability\nWork with big data and real-time systems'
-    // },
-    // {
-    //   id: 8,
-    //   title: 'Node Js Developer',
-    //   company: 'Netflix',
-    //   createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
-    //   experience: { min: 1, max: 3 },
-    //   salary: { min: 16, max: 24 },
-    //   workType: 'Remote',
-    //   description: 'Build streaming platform backend services\nImplement content delivery optimization\nDevelop recommendation algorithms'
-    // }
+    // Your sample jobs here if needed
   ];
 
   const displayJobs = jobs.length > 0 ? jobs : sampleJobs;
@@ -204,9 +164,7 @@ const JobListingGrid = ({ jobs = [] }) => {
         <div className="job-listing-grid">
           {displayJobs.length === 0 ? (
             <div className="job-listing-no-jobs">
-              <p>
-                No jobs found.
-              </p>
+              <p>No jobs found.</p>
             </div>
           ) : (
             displayJobs.map((job) => (

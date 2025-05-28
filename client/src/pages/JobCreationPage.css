@@ -21,7 +21,7 @@
   background-color: #FFFFFF;
   border-radius: 16px;
   width: 100%;
-  max-width: 800px;
+  max-width: 750px;
   max-height: 90vh;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -29,7 +29,6 @@
 
 .modal-header {
   padding: 24px 32px;
-  border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,11 +36,11 @@
 }
 
 .modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 450;
   font-size: 24px;
-  font-weight: 600;
-  color: #222222;
-  margin: 0;
-  align-items: center;
+  line-height: 100%;
+  letter-spacing: 0%;
 }
 
 .modal-close-button {
@@ -74,6 +73,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 280;
+  width: 100%; /* Ensure consistent width */
 }
 
 .form-group.full-width {
@@ -81,12 +83,12 @@
 }
 
 .form-label {
-  font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 480;
+  font-size: 18px;
   line-height: 100%;
   letter-spacing: 0%;
-  color: #374151;
+  color: #636363;
 }
 
 .form-input {
@@ -97,12 +99,23 @@
   outline: none;
   transition: all 0.2s ease;
   background-color: white;
-  font-family: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 500;
+  width: 100%; /* Make all inputs fill their container */
+  box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 .form-input:focus {
-  border-color: #00AAFF;
-  box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1);
+  border-color: #222222;
+}
+
+.form-input::placeholder {
+  color: #BCBCBC;
+font-weight: 500;
+font-size: 16px;
+line-height: 100%;
+letter-spacing: 0%;
+
 }
 
 .form-select {
@@ -115,11 +128,22 @@
   background-color: white;
   font-family: inherit;
   cursor: pointer;
+  width: 100%; /* Make all selects fill their container */
+  box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 .form-select:focus {
-  border-color: #00AAFF;
-  box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1);
+  border-color: #222222;
+  /* box-shadow: 0 0 0 3px rgba(14, 129, 187, 0.1); */
+
+}
+
+.form-select option[disabled][selected] {
+  color: #6c757d; /* Gray color for placeholder text */
+}
+
+.form-select option:not([disabled]) {
+  color: #222222; /* Regular text color for options */
 }
 
 .form-textarea {
@@ -128,21 +152,46 @@
   border-radius: 8px;
   border: 2px solid #e1e5e9;
   outline: none;
-  min-height: 120px;
+  min-height: 150px;
   resize: vertical;
   font-family: inherit;
   background-color: white;
   transition: all 0.2s ease;
+  width: 100%; /* Make textarea fill its container */
+  box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 .form-textarea:focus {
-  border-color: #00AAFF;
-  box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1);
+  border-color: #222222;
+  /* box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1); */
+}
+
+.form-textarea::placeholder {
+color: #BCBCBC;
+font-weight: 500;
+font-size: 16px;
+line-height: 100%;
+letter-spacing: 0%;
+
 }
 
 .salary-group {
   display: flex;
+  gap: 9px;
+}
+
+.salary-group .form-input {
+  flex: 1; /* Make salary inputs equal width */
+}
+
+/* Experience range inputs should also be equal */
+.experience-group {
+  display: flex;
   gap: 12px;
+}
+
+.experience-group .form-input {
+  flex: 1; /* Make experience inputs equal width */
 }
 
 .error-message {
@@ -157,31 +206,34 @@
   gap: 16px;
   justify-content: flex-end;
   margin-top: 24px;
+  /* margin-bottom: 5px; */
 }
 
 .btn-secondary {
-  width: 160px;
+  width: 200px;
   height: 50px;
-  margin-right: 400px;
-  margin-bottom: 25px;
+  margin-right: 300px;
+  /* margin-bottom: 25px; */
   border-radius: 8px;
   background: white;
-  border: 2px solid #374151;
+  border: 1.5px solid #222222;
   font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  color: #374151;
+  font-weight: 800px;
+  font-size: 17px;
+  color: #222222;
   cursor: pointer;
-  transition: all 0.2s ease;
+  /* transition: all 0.2s ease; */
   display: flex;
   align-items: center;
   justify-content: center;
+
+
 }
 
-.btn-secondary:hover {
+/* .btn-secondary:hover {
   background-color: #f9fafb;
   transform: translateY(-1px);
-}
+} */
 
 .btn-secondary:disabled {
   opacity: 0.6;
@@ -189,10 +241,10 @@
 }
 
 .btn-primary {
-  width: 160px;
+  width: 200px;
   height: 50px;
   border-radius: 8px;
-  margin-bottom: 25px;
+  /* margin-bottom: 25px; */
   background: #00AAFF;
   border: none;
   font-family: 'Satoshi Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -206,12 +258,45 @@
   justify-content: center;
 }
 
-.btn-primary:hover {
+/* .btn-primary:hover {
   background: #0099e6;
   transform: translateY(-1px);
-}
+} */
 
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Location Dropdown Styles */
+.location-input {
+  position: relative;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  pointer-events: none;
+}
+
+.location-dropdown {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.location-dropdown div {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.location-dropdown div:hover {
+  background-color: #f5f5f5;
 }

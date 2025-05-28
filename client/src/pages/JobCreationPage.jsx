@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import jobService from "../services/jobService";
@@ -6,6 +6,10 @@ import JobListingPage from "./JobListingPage";
 import "./JobCreationPage.css";
 
 export default function JobCreationPage() {
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+  const modalRef = useRef(null);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -13,7 +17,8 @@ export default function JobCreationPage() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    setValue
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -59,6 +64,39 @@ export default function JobCreationPage() {
     console.log("Save draft functionality not implemented yet");
   };
 
+  const locations = [
+    'Bangalore',
+    'Hyderabad',
+    'Pune',
+    'Chennai',
+    'Delhi NCR',
+    'Mumbai',
+    'Gurgaon',
+    'Noida',
+    'Ahmedabad',
+    'Kolkata'
+  ];
+
+  // Close dropdown/modal when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close dropdown if clicking outside of it
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+      
+      // Close modal if clicking outside of it
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        handleCloseModal();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="job-creation-page">
       <div className="job-creation-background">
@@ -66,7 +104,7 @@ export default function JobCreationPage() {
       </div>
 
       <div className="modal-overlay">
-        <div className="modal">
+        <div className="modal" ref={modalRef}>
           <div className="modal-header">
             <h2 className="modal-title">Create Job Opening</h2>
             <button 
@@ -105,13 +143,48 @@ export default function JobCreationPage() {
                   )}
                 </div>
 
-                <div className="form-group">
+                <div className="form-group location-filter" ref={dropdownRef}>
                   <label className="form-label">Location</label>
-                  <input
-                    {...register("location", { required: "Location is required" })}
-                    placeholder="Choose Preferred Location"
-                    className="form-input"
-                  />
+                  <div 
+                    className="location-input"
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  >
+                    <input
+                      {...register("location", { required: "Location is required" })}
+                      placeholder="Choose Preferred Location"
+                      className="form-input"
+                      value={selectedLocation}
+                      readOnly
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <span style={{ 
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: showDropdown ? 'translateY(-50%) rotate(180deg)' : 'translateY(-50%)',
+                      transition: 'transform 0.2s'
+                    }}>
+                      
+                    </span>
+                  </div>
+                  
+                  {showDropdown && (
+                    <div className="location-dropdown">
+                      {locations.map((location) => (
+                        <div
+                          key={location}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setSelectedLocation(location);
+                            setValue("location", location);
+                            setShowDropdown(false);
+                          }}
+                        >
+                          {location}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   {errors.location && (
                     <span className="error-message">{errors.location.message}</span>
                   )}
@@ -123,11 +196,10 @@ export default function JobCreationPage() {
                     {...register("type", { required: "Job type is required" })}
                     className="form-select"
                   >
-                    <option value="">Select Job Type</option>
+                    <option value="Internship">Internship</option>
                     <option value="Full-time">Full Time</option>
                     <option value="Part-time">Part Time</option>
                     <option value="Contract">Contract</option>
-                    <option value="Internship">Internship</option>
                   </select>
                   {errors.type && (
                     <span className="error-message">{errors.type.message}</span>
@@ -142,7 +214,7 @@ export default function JobCreationPage() {
                         required: "Minimum salary is required",
                         min: { value: 0, message: "Salary must be positive" }
                       })}
-                      placeholder="₹ 0"
+                      placeholder="↑↓ ₹0"
                       type="number"
                       className="form-input"
                     />
@@ -151,7 +223,7 @@ export default function JobCreationPage() {
                         required: "Maximum salary is required",
                         min: { value: 0, message: "Salary must be positive" }
                       })}
-                      placeholder="₹ 12,00,000"
+                      placeholder="↑↓ ₹12,00,000"
                       type="number"
                       className="form-input"
                     />
@@ -176,44 +248,6 @@ export default function JobCreationPage() {
                   )}
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">Experience Range</label>
-                  <div className="salary-group">
-                    <input
-                      {...register("experienceMin", { 
-                        required: "Minimum experience is required",
-                        min: { value: 0, message: "Experience must be positive" }
-                      })}
-                      placeholder="Min Exp (yrs)"
-                      type="number"
-                      className="form-input"
-                    />
-                    <input
-                      {...register("experienceMax", { 
-                        required: "Maximum experience is required",
-                        min: { value: 0, message: "Experience must be positive" }
-                      })}
-                      placeholder="Max Exp (yrs)"
-                      type="number"
-                      className="form-input"
-                    />
-                  </div>
-                  {(errors.experienceMin || errors.experienceMax) && (
-                    <span className="error-message">
-                      {errors.experienceMin?.message || errors.experienceMax?.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Company Logo URL</label>
-                  <input
-                    {...register("logoUrl")}
-                    placeholder="Company Logo URL (optional)"
-                    className="form-input"
-                  />
-                </div>
-
                 <div className="form-group full-width">
                   <label className="form-label">Job Description</label>
                   <textarea
@@ -225,34 +259,15 @@ export default function JobCreationPage() {
                     <span className="error-message">{errors.description.message}</span>
                   )}
                 </div>
-
-                <div className="form-group full-width">
-                  <label className="form-label">Requirements</label>
-                  <textarea
-                    {...register("requirements")}
-                    placeholder="List the key requirements for this position (optional)"
-                    className="form-textarea"
-                  />
-                </div>
-
-                <div className="form-group full-width">
-                  <label className="form-label">Responsibilities</label>
-                  <textarea
-                    {...register("responsibilities")}
-                    placeholder="Describe the main responsibilities of this role (optional)"
-                    className="form-textarea"
-                  />
-                </div>
               </div>
 
               <div className="form-actions">
                 <button 
-                  type="button" 
-                  className="btn-secondary" 
+                  type="button"
+                  className="btn-secondary"
                   onClick={handleSaveDraft}
-                  disabled={isSubmitting}
                 >
-                  Save Draft ↓
+                  Save Draft <span style={{ display: "inline-block", transform: "rotate(90deg)", marginLeft: "6px" }}>»</span>
                 </button>
                 <button 
                   type="submit" 

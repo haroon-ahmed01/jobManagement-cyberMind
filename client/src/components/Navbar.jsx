@@ -33,9 +33,8 @@ const Navbar = () => {
           <div className="navbar-link-container testimonials">
             <Link to="/testimonials" className="navbar-link">Testimonials</Link>
           </div>
-        </nav>
-        
-        <div className="create-job-container">
+
+          <div className="create-job-container">
           <button
             className="create-job-btn"
             onClick={() => navigate('/create-job')}
@@ -43,6 +42,7 @@ const Navbar = () => {
             Create Jobs
           </button>
         </div>
+        </nav>
       </div>
     </div>
   );
