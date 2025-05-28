@@ -16,8 +16,8 @@ const jobSchema = new mongoose.Schema({
     max: { type: Number, required: true },
   },
   experience: {
-    min: { type: Number, required: true },
-    max: { type: Number, required: true }
+    min: { type: Number },
+    max: { type: Number }
   },
   description: { type: String, required: true },
   requirements: { type: [String], default: [] },
